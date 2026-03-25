@@ -402,8 +402,8 @@ local function InitNamePlate(plate)
 
     -- hp text
     if not UnitFrame.hptext then
-        UnitFrame.hptext = UnitFrame:CreateFontString(nil, "ARTWORK", "SystemFont_Outline")
-        UnitFrame.hptext:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 15, "OUTLINE")
+        UnitFrame.hptext = newBorder:CreateFontString(nil, "OVERLAY", "SystemFont_Outline")
+        UnitFrame.hptext:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 12, "OUTLINE")
         UnitFrame.hptext:SetPoint("CENTER", healthBar, "CENTER", 0, 0)
         UnitFrame.hptext:SetTextColor(1, 1, 1)
     end
@@ -563,12 +563,12 @@ scanFrame:SetScript("OnUpdate", function(self, elapsed)
 			-- local uf = nameplate.UnitFrame
 			local hptext = uf and uf.hptext
 			if hptext then
-				if nameplate:GetAlpha() == 1 and UnitIsUnit("target", uf.unit or "") then -- if nameplate:GetAlpha() == 1 and UnitExists("target") then
+				if nameplate:GetAlpha() == 1 and UnitIsUnit("target", uf.unit or "") then
 					local maxhp = UnitHealthMax("target")
 
 					if maxhp > 0 then
 						local hp = (UnitHealth("target") / maxhp) * 100
-						hptext:SetText(strformat("%.1f%%", hp))
+						hptext:SetText(strformat("%.1f", hp))
 						hptext:Show()
 					end
 				else
