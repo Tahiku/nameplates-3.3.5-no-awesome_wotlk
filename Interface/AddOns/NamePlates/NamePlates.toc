@@ -1,0 +1,8 @@
+﻿## Interface: 30300
+## Title: !!!!!335AsuriPlates
+## Notes: 
+## Author: 
+## DefaultState: Enabled
+## Dependencies: !!!ClassicAPI
+
+NamePlates.lua
