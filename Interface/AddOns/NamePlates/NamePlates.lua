@@ -70,27 +70,30 @@ local ghoulPets = {
     "Casket", "Limb", "Worm", "Earth", "Spine", "Pebble", "Root", "Marrow", "Hammer"
 }
 
-local cIcon = {
+local cIcon = { -- Edited / flipped textures are: Priest, Rogue, Paladin, Druid
     ["MAGE"] = "Interface\\Icons\\inv_staff_13",
-    ["PRIEST"] = "Interface\\Icons\\inv_staff_30",
     ["WARRIOR"] = "Interface\\Icons\\inv_sword_27",
     ["HUNTER"] = "Interface\\Icons\\inv_weapon_bow_07",
-    ["ROGUE"] = "Interface\\Icons\\inv_throwingknife_04",
     ["WARLOCK"] = "Interface\\Icons\\spell_nature_drowsy",
     ["SHAMAN"] = "Interface\\Icons\\spell_nature_bloodlust",
     ["DEATHKNIGHT"] = "Interface\\Icons\\spell_deathknight_classIcon",
     ["DRUID"] = "Interface\\AddOns\\NamePlates\\medias\\classicon_druid.blp",
     ["PALADIN"] = "Interface\\AddOns\\NamePlates\\medias\\inv_hammer_100.blp",
+    ["PRIEST"] = "Interface\\AddOns\\NamePlates\\medias\\inv_staff_300", -- inv_staff_30
+    ["ROGUE"] = "Interface\\AddOns\\NamePlates\\medias\\inv_throwingknife_0400", -- inv_throwingknife_04
 }
 
 
 local spellColors = {
+    ["Mass Dispel"] = { r = 0.1, g = 0.78, b = 0.92 },
     ["First Aid"] = { r = .97, g = .97, b = .97 },
     ["Hearthstone"] = { r = .97, g = .97, b = .97 },
     ["Attack"] = { r = .97, g = .97, b = .97 },
     ["Steady Shot"] = { r = .97, g = .97, b = .97 },
     ["Shattering Throw"] = { r = .97, g = .97, b = .97 },
     ["War Stomp"] = { r = .97, g = .97, b = .97 },
+
+    ["Grand Spellstone"] = { r = .97, g = .97, b = .97 },
     ["Deadly Poison IX"] = { r = .97, g = .97, b = .97 },
     ["Wound Poison VII"] = { r = .97, g = .97, b = .97 },
     ["Crippling Poison"] = { r = .97, g = .97, b = .97 },
@@ -194,10 +197,16 @@ local function PlayerClassIcons(nameplate, unit, nameText)
 
     if not nameplate.classTexture then
         nameplate.classTexture = nameplate:CreateTexture(nil, "OVERLAY")
-        nameplate.classTexture:SetSize(20, 20) -- 22.4, 22.4
-        nameplate.classTexture:SetTexCoord(.06, .94, .06, .94)
-        nameplate.classTexture:SetPoint("RIGHT", nameplate, "RIGHT", 9, -6.3)
+
+        nameplate.classTexture:SetSize(22.6, 22.6) -- 22.4, 22.4
+        -- nameplate.classTexture:SetTexCoord(.06, .94, .06, .94)
+        nameplate.classTexture:SetPoint("RIGHT", nameplate, "RIGHT", 8, -7.4)
         nameplate.classTexture:Hide()
+
+        -- nameplate.classTexture:SetSize(19, 19) -- 22.4, 22.4
+        ---- nameplate.classTexture:SetTexCoord(.1, .9, .1, .9)
+        -- nameplate.classTexture:SetPoint("RIGHT", nameplate, "RIGHT", 3, -7)
+        -- nameplate.classTexture:Hide()
     end
 
     if iconTexture then
@@ -335,8 +344,8 @@ local function InitNamePlate(plate)
     UnitFrame.castBarBorder = cbborder
     UnitFrame.cbicon = cbicon
     UnitFrame.cbshield = cbshield
-    cbicon:SetSize(16, 16)
-
+    cbicon:SetSize(16, 16) -- 16, 16
+    cbicon:SetTexCoord(.06, .94, .06, .94)
     border:Hide()
     border:SetTexture(.3, .3, .3)
 
@@ -357,7 +366,7 @@ local function InitNamePlate(plate)
     UnitFrame.origOverlay = overlay
 
     local name = UnitFrame:CreateFontString(nil, "ARTWORK")
-    name:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 14, "OUTLINE")
+    name:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 13, "OUTLINE")
 
     name:SetWordWrap(false)
 
@@ -389,7 +398,7 @@ local function InitNamePlate(plate)
         plate.castText = plate:CreateFontString(nil, "ARTWORK", "SystemFont_Outline") 
         plate.castText:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 12, "OUTLINE")
         plate.castText:SetSize(120, 16)
-        plate.castText:SetPoint("CENTER", castBar, "CENTER", 0, 0)
+        plate.castText:SetPoint("CENTER", castBar, "CENTER", 0, 1)
     end
 
     -- time
@@ -397,14 +406,15 @@ local function InitNamePlate(plate)
         plate.timer = plate:CreateFontString(nil, "ARTWORK", "SystemFont_Outline")
         plate.timer:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 12, "OUTLINE")
         plate.timer:SetSize(150, 16)
-        plate.timer:SetPoint("RIGHT", castBar, "RIGHT", 92, 0)
+        plate.timer:SetPoint("RIGHT", castBar, "RIGHT", 88, 0) -- ("RIGHT", castBar, "RIGHT", 92, 0)
     end
 
     -- hp text
     if not UnitFrame.hptext then
         UnitFrame.hptext = newBorder:CreateFontString(nil, "OVERLAY", "SystemFont_Outline")
-        UnitFrame.hptext:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 12, "OUTLINE")
-        UnitFrame.hptext:SetPoint("CENTER", healthBar, "CENTER", 0, 0)
+        UnitFrame.hptext:SetFont("Interface\\AddOns\\NamePlates\\Prototype.ttf", 10, "OUTLINE")
+        UnitFrame.hptext:SetPoint("CENTER", healthBar, "CENTER", 2, 0)
+        UnitFrame.hptext:SetJustifyH("CENTER")
         UnitFrame.hptext:SetTextColor(1, 1, 1)
     end
 
@@ -538,28 +548,6 @@ scanFrame:SetScript("OnUpdate", function(self, elapsed)
         if nameplate:IsShown() then
 		    -- nameplate:SetAlpha(1) ---- disable for target nameplate detection method
             local uf = nameplate.UnitFrame
----------------------------------------------------------------------------------------------------
-        -- if nameplate:IsShown() then
-		    ---------- nameplate:SetAlpha(1)
-			-- local uf = nameplate.UnitFrame
-			-- local hptext = uf and uf.hptext
-            -- if uf and uf.hptext then
-                -- if nameplate:GetAlpha() == 1 and UnitExists("target") then
-                    -- local value = uf.healthBar:GetValue()
-                    -- local _, maxValue = uf.healthBar:GetMinMaxValues()
-
-                    -- if maxValue and maxValue > 0 then
-                        -- local hp = (value / maxValue) * 100
-                        -- uf.hptext:SetText(strformat("%.1f", hp))
-                        -- uf.hptext:Show()
-                    -- else
-                        -- uf.hptext:Hide()
-                    -- end
-                -- else
-                    -- uf.hptext:Hide()
-                -- end
-            -- end
----------------------------------------------------------------------------------------------------
 			-- local uf = nameplate.UnitFrame
 			local hptext = uf and uf.hptext
 			if hptext then
@@ -567,14 +555,20 @@ scanFrame:SetScript("OnUpdate", function(self, elapsed)
 					local maxhp = UnitHealthMax("target")
 
 					if maxhp > 0 then
-						local hp = (UnitHealth("target") / maxhp) * 100
-						hptext:SetText(strformat("%.1f", hp))
+					    local hp = (UnitHealth("target") / maxhp) * 100
+						local hpRounded = floor(hp + 0.5)
+						if hp == hpRounded then
+	                        hptext:SetText(hpRounded)
+                        else
+                            hptext:SetText(strformat("%.1f", hp))
+                        end
 						hptext:Show()
 					end
 				else
 					hptext:Hide()
 				end
 			end
+
 ---------------------------------------------------------------------------------------------------
             if uf then
                 local name = uf.origName:GetText()
